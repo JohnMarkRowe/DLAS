@@ -142,8 +142,7 @@
 
   /* ===================== Hero ===================== */
   .hero{ padding-block: 40px 32px; position:relative; overflow:hidden; }
-  .hero-grid{ display:grid; grid-template-columns: 1.3fr .9fr; gap:32px; align-items:center; }
-  @media (max-width:760px){ .hero-grid{ grid-template-columns:1fr; } }
+  .hero-grid{ max-width:68ch; }
   .hero h1{ font-size:clamp(2.1rem, 5vw, 3.1rem); font-weight:700; margin-block:10px 14px; }
   .hero p.lede{ max-width:60ch; font-size:1.05rem; color:var(--text); }
   .hero-links{ display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
@@ -156,9 +155,6 @@
   }
   .chip.primary{ background:var(--accent); color:var(--accent-contrast); border-color:transparent; }
   .chip svg{ width:14px; height:14px; }
-
-  .storm-mark{ width:100%; aspect-ratio:5/4; max-width:360px; margin-inline:auto; position:relative; border-radius:16px; overflow:hidden; box-shadow:var(--shadow); }
-  .storm-mark svg{ width:100%; height:100%; display:block; }
 
   /* ===================== Sections ===================== */
   section.block{ padding-block:36px; border-top:1px solid var(--border); }
@@ -298,74 +294,6 @@
             LZK decision support
           </a>
         </div>
-      </div>
-      <div class="storm-mark" aria-hidden="true" title="Diamond Lakes Area Skywarn">
-        <svg viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#0a1017"/>
-              <stop offset=".6" stop-color="#1c2933"/>
-              <stop offset="1" stop-color="#33434e"/>
-            </linearGradient>
-            <linearGradient id="funnelGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#5b6c78"/>
-              <stop offset=".45" stop-color="#1a2329"/>
-              <stop offset=".55" stop-color="#1a2329"/>
-              <stop offset="1" stop-color="#697b87"/>
-            </linearGradient>
-            <filter id="softBlur" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="7"/>
-            </filter>
-            <filter id="boltBlur" x="-80%" y="-80%" width="260%" height="260%">
-              <feGaussianBlur stdDeviation="6"/>
-            </filter>
-          </defs>
-
-          <rect width="400" height="320" fill="url(#skyGrad)"/>
-
-          <!-- distant cloud mass -->
-          <g filter="url(#softBlur)" opacity=".55">
-            <ellipse cx="90" cy="55" rx="95" ry="34" fill="#3d4d59"/>
-            <ellipse cx="230" cy="40" rx="120" ry="30" fill="#334049"/>
-            <ellipse cx="330" cy="60" rx="80" ry="28" fill="#3d4d59"/>
-          </g>
-
-          <!-- lightning glow (behind bolt) -->
-          <g filter="url(#boltBlur)" opacity=".55">
-            <path d="M296 28 268 96 290 96 258 172 282 172 250 240 272 240 252 300"
-                  fill="none" stroke="var(--accent)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-
-          <!-- Ouachita ridgeline -->
-          <path d="M0 300 C 40 270 70 285 100 268 C 140 246 165 272 205 260 C 250 246 275 270 310 258 C 345 247 365 266 400 254 L400 320 L0 320 Z"
-                fill="#0a1017"/>
-
-          <!-- tornado funnel -->
-          <ellipse cx="128" cy="46" rx="58" ry="16" fill="#2a343d" opacity=".9"/>
-          <path d="M78 48
-                   C 70 108 118 140 132 186
-                   C 139 214 143 240 146 266
-                   C 149 240 155 214 163 186
-                   C 178 138 214 106 182 48
-                   C 164 66 96 66 78 48 Z"
-                fill="url(#funnelGrad)"/>
-          <path d="M112 96 C 122 100 134 100 144 96" stroke="#7c8d99" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"/>
-          <path d="M120 146 C 130 151 143 151 152 146" stroke="#7c8d99" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"/>
-          <path d="M132 198 C 139 202 148 202 155 198" stroke="#7c8d99" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"/>
-          <ellipse cx="146" cy="268" rx="46" ry="13" fill="#0d151b" opacity=".85"/>
-          <ellipse cx="108" cy="272" rx="16" ry="7" fill="#0d151b" opacity=".6"/>
-          <ellipse cx="182" cy="270" rx="20" ry="8" fill="#0d151b" opacity=".6"/>
-
-          <!-- lightning bolt (crisp) -->
-          <path d="M296 28 268 96 290 96 258 172 282 172 250 240 272 240 252 300"
-                fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M282 172 316 198 300 206 322 236" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>
-
-          <!-- obstruction light, a nod to the original banner -->
-          <line x1="358" y1="232" x2="358" y2="270" stroke="#4a5560" stroke-width="2"/>
-          <circle cx="358" cy="229" r="3.5" fill="var(--sev-warning)"/>
-
-        </svg>
       </div>
     </div>
   </section>
