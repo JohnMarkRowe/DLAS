@@ -162,7 +162,9 @@
   .block-head h2{ font-size:1.8rem; font-weight:600; }
   .block-head p{ margin:4px 0 0; color:var(--text-muted); max-width:56ch; font-size:.94rem; }
 
-  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px; align-items:start; }
+  .card.wide{ grid-column:span 2; }
+  @media (max-width:560px){ .card.wide{ grid-column:span 1; } }
 
   .card{
     background:var(--surface); border:1px solid var(--border); border-radius:12px;
@@ -377,13 +379,24 @@
         </div>
       </article>
 
-      <article class="card">
+      <article class="card wide">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16a4 4 0 0 1 .5-7.97A5.5 5.5 0 0 1 17 10a3.5 3.5 0 0 1-.5 7z"/></svg></div>
         <h3>Short-term forecast</h3>
-        <p>NWS point forecast, split for the two ends of the coverage area.</p>
+        <p>NWS point forecast for towns across the coverage area.</p>
         <div class="card-links">
           <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.5037&amp;lon=-93.0552" target="_blank" rel="noopener">Hot Springs ↗</a>
           <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.5590&amp;lon=-93.6165" target="_blank" rel="noopener">Mt Ida ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.3639&amp;lon=-92.8108" target="_blank" rel="noopener">Malvern ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.0606&amp;lon=-93.6944" target="_blank" rel="noopener">Murfreesboro ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.6567&amp;lon=-92.9642" target="_blank" rel="noopener">Hot Springs Village ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.6931&amp;lon=-93.5178" target="_blank" rel="noopener">Story ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.7012&amp;lon=-93.0616" target="_blank" rel="noopener">Jessieville ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.5114&amp;lon=-93.2411" target="_blank" rel="noopener">Royal ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.6236&amp;lon=-93.7906" target="_blank" rel="noopener">Oden ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.3162&amp;lon=-93.1707" target="_blank" rel="noopener">Bismarck ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.2661&amp;lon=-93.4642" target="_blank" rel="noopener">Amity ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.1219&amp;lon=-93.0661" target="_blank" rel="noopener">Arkadelphia ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.3725&amp;lon=-93.8796" target="_blank" rel="noopener">Camp Albert Pike ↗</a>
         </div>
       </article>
 
@@ -447,6 +460,18 @@
         <p>ARDOT's live 511 traveler map — check routes before heading out to spot or respond.</p>
         <div class="card-links">
           <a class="btn" href="https://www.idrivearkansas.com/" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+      </article>
+
+      <article class="card wide">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 16c2 2 4 2 6 0s4-2 6 0 4 2 6 0M3 20c2 2 4 2 6 0s4-2 6 0 4 2 6 0"/><path d="M12 3v10"/></svg></div>
+        <h3>Lake levels &amp; flows</h3>
+        <p>Live pool elevation and outflow for the four Diamond Lakes, from USACE and USGS gauges.</p>
+        <div class="card-links">
+          <a class="btn" href="https://water.usace.army.mil/overview/mvk/locations/lake%20ouachita" target="_blank" rel="noopener">Lake Ouachita ↗</a>
+          <a class="btn" href="https://waterdata.usgs.gov/monitoring-location/USGS-07358500/all-graphs/" target="_blank" rel="noopener">Lake Hamilton ↗</a>
+          <a class="btn" href="https://waterdata.usgs.gov/monitoring-location/USGS-07359002/all-graphs/" target="_blank" rel="noopener">Lake Catherine ↗</a>
+          <a class="btn" href="https://water.usace.army.mil/overview/mvk/locations/degray%20lake" target="_blank" rel="noopener">DeGray Lake ↗</a>
         </div>
       </article>
 
