@@ -179,6 +179,8 @@
   .card h3{ font-size:1.18rem; font-weight:600; }
   .card p{ margin:0; font-size:.88rem; color:var(--text-muted); flex:1; }
   .card-links{ display:flex; flex-wrap:wrap; gap:8px; margin-top:2px; }
+  .card-note{ margin:12px 0 0; padding-top:12px; border-top:1px solid var(--border); font-size:.8rem; color:var(--text-muted); }
+  .card-note strong{ color:var(--sev-warning); }
 
   .btn{
     display:inline-flex; align-items:center; gap:6px;
@@ -398,6 +400,7 @@
           <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.1219&amp;lon=-93.0661" target="_blank" rel="noopener">Arkadelphia ↗</a>
           <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.3725&amp;lon=-93.8796" target="_blank" rel="noopener">Camp Albert Pike ↗</a>
         </div>
+        <p class="card-note"><strong>Camp Albert Pike:</strong> on June 11, 2010, the Little Missouri River rose from 3 feet to over 23 feet in under four hours here, catching campers overnight with no on-site ranger, no cell service, and no sirens — 20 people died. Check this forecast before anyone camps along the river.</p>
       </article>
 
       <article class="card">
@@ -466,11 +469,12 @@
       <article class="card wide">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 16c2 2 4 2 6 0s4-2 6 0 4 2 6 0M3 20c2 2 4 2 6 0s4-2 6 0 4 2 6 0"/><path d="M12 3v10"/></svg></div>
         <h3>Lake levels &amp; flows</h3>
-        <p>Live pool elevation and outflow for the four Diamond Lakes, from USACE and USGS gauges.</p>
+        <p>Live pool elevation and outflow for Ouachita, Hamilton, Catherine, Greeson, and DeGray, from USACE and USGS gauges.</p>
         <div class="card-links">
           <a class="btn" href="https://water.usace.army.mil/overview/mvk/locations/lake%20ouachita" target="_blank" rel="noopener">Lake Ouachita ↗</a>
           <a class="btn" href="https://waterdata.usgs.gov/monitoring-location/USGS-07358500/all-graphs/" target="_blank" rel="noopener">Lake Hamilton ↗</a>
           <a class="btn" href="https://waterdata.usgs.gov/monitoring-location/USGS-07359002/all-graphs/" target="_blank" rel="noopener">Lake Catherine ↗</a>
+          <a class="btn" href="https://water.usace.army.mil/overview/mvk/locations/narrows%20dam" target="_blank" rel="noopener">Lake Greeson ↗</a>
           <a class="btn" href="https://water.usace.army.mil/overview/mvk/locations/degray%20lake" target="_blank" rel="noopener">DeGray Lake ↗</a>
         </div>
       </article>
