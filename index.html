@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Lakes Area Skywarn</title>
+<meta name="description" content="Storm-spotter resource console for the Diamond Lakes area of Arkansas — radar, local sensors, net audio, and how to get licensed.">
+
+<!--
+  ============================================================
+  TWO LINKS STILL NEED REAL URLS FROM THE SITE OWNER.
+  Search this file for "NEEDS-LINK" and replace the href="#"
+  values (and remove the .pending class + badge) once you have:
+    1) High Peak lookout camera URL
+    2) West Mountain lookout camera URL
+  (Both Ambient Weather stations and the YouTube channel are wired up.)
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ===================== Design tokens ===================== */
+  :root{
+    --bg:#eef3f4;
+    --surface:#ffffff;
+    --surface-2:#e3eaec;
+    --border:#c7d2d6;
+    --ink:#16212b;
+    --text:#3d4a54;
+    --text-muted:#66747d;
+    --accent:#b8721e;
+    --accent-ink:#6e4210;
+    --accent-contrast:#fffaf0;
+    --sev-warning:#c8352a;
+    --sev-watch:#c99a1c;
+    --sev-advisory:#2e7d63;
+    --focus:#2e6f9e;
+    --shadow: 0 1px 2px rgba(20,30,38,.06), 0 8px 20px -12px rgba(20,30,38,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0d151d;
+      --surface:#141f29;
+      --surface-2:#1b2933;
+      --border:#2b3c47;
+      --ink:#f1f5f7;
+      --text:#c3ced6;
+      --text-muted:#8a99a3;
+      --accent:#e0a83f;
+      --accent-ink:#0d151d;
+      --accent-contrast:#12100a;
+      --sev-warning:#e8695a;
+      --sev-watch:#e7c24a;
+      --sev-advisory:#57c19d;
+      --focus:#6db3e0;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 28px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d151d;
+    --surface:#141f29;
+    --surface-2:#1b2933;
+    --border:#2b3c47;
+    --ink:#f1f5f7;
+    --text:#c3ced6;
+    --text-muted:#8a99a3;
+    --accent:#e0a83f;
+    --accent-ink:#0d151d;
+    --accent-contrast:#12100a;
+    --sev-warning:#e8695a;
+    --sev-watch:#e7c24a;
+    --sev-advisory:#57c19d;
+    --focus:#6db3e0;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 28px -14px rgba(0,0,0,.6);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; } }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    padding-inline: max(16px, env(safe-area-inset-left)) max(16px, env(safe-area-inset-right));
+  }
+
+  h1,h2,h3{ font-family:"Barlow Condensed", "Public Sans", sans-serif; color:var(--ink); text-wrap:balance; margin:0; letter-spacing:.2px; }
+  a{ color:inherit; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; border-radius:4px; }
+
+  .wrap{ max-width:1080px; margin-inline:auto; }
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.72rem; font-weight:600; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--accent-ink);
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .eyebrow{ color:var(--accent); } }
+  :root[data-theme="dark"] .eyebrow{ color:var(--accent); }
+
+  /* ===================== Header ===================== */
+  header.site{
+    position:sticky; top:0; z-index:20;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .site-inner{
+    max-width:1080px; margin-inline:auto;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding-block:12px;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; min-width:0; flex:none; }
+  .brand-mark{ width:34px; height:34px; flex:none; color:var(--accent); }
+  .brand-text{ display:flex; flex-direction:column; line-height:1.1; min-width:0; }
+  .brand-text b{ font-family:"Barlow Condensed"; font-weight:700; font-size:1.05rem; color:var(--ink); letter-spacing:.3px; white-space:nowrap; }
+  .brand-text span{ font-family:"IBM Plex Mono"; font-size:.66rem; color:var(--text-muted); letter-spacing:.06em; white-space:nowrap; }
+
+  nav.primary{ display:flex; gap:4px; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; max-width:100%; }
+  nav.primary::-webkit-scrollbar{ display:none; }
+  nav.primary a{
+    text-decoration:none; font-weight:600; font-size:.86rem; color:var(--text);
+    padding:8px 12px; border-radius:7px; white-space:nowrap; flex:none;
+  }
+  nav.primary a:hover{ background:var(--surface-2); color:var(--ink); }
+
+  @media (max-width:520px){
+    .brand-text span{ display:none; }
+    .brand-text b{ font-size:.95rem; }
+    nav.primary a{ font-size:.78rem; padding:8px 9px; }
+  }
+
+  /* ===================== Hero ===================== */
+  .hero{ padding-block: 40px 32px; position:relative; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns: 1.3fr .9fr; gap:32px; align-items:center; }
+  @media (max-width:760px){ .hero-grid{ grid-template-columns:1fr; } }
+  .hero h1{ font-size:clamp(2.1rem, 5vw, 3.1rem); font-weight:700; margin-block:10px 14px; }
+  .hero p.lede{ max-width:60ch; font-size:1.05rem; color:var(--text); }
+  .hero-links{ display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+  .chip{
+    display:inline-flex; align-items:center; gap:7px;
+    font-family:"IBM Plex Mono"; font-size:.78rem; font-weight:600;
+    padding:9px 14px; border-radius:999px; text-decoration:none;
+    border:1px solid var(--border); background:var(--surface); color:var(--ink);
+    box-shadow: var(--shadow);
+  }
+  .chip.primary{ background:var(--accent); color:var(--accent-contrast); border-color:transparent; }
+  .chip svg{ width:14px; height:14px; }
+
+  .radar-scope{ width:100%; aspect-ratio:1/1; max-width:280px; margin-inline:auto; position:relative; }
+  .radar-scope svg{ width:100%; height:100%; display:block; }
+  .sweep{ transform-origin:150px 150px; animation: sweep 6s linear 4; }
+  @keyframes sweep{ to{ transform: rotate(360deg); } }
+
+  /* ===================== Sections ===================== */
+  section.block{ padding-block:36px; border-top:1px solid var(--border); }
+  .block-head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:22px; flex-wrap:wrap; }
+  .block-head h2{ font-size:1.8rem; font-weight:600; }
+  .block-head p{ margin:4px 0 0; color:var(--text-muted); max-width:56ch; font-size:.94rem; }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px; }
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:18px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .card .icon{
+    width:36px; height:36px; border-radius:9px; background:var(--surface-2); color:var(--accent);
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .card .icon svg{ width:19px; height:19px; }
+  .card h3{ font-size:1.18rem; font-weight:600; }
+  .card p{ margin:0; font-size:.88rem; color:var(--text-muted); flex:1; }
+  .card-links{ display:flex; flex-wrap:wrap; gap:8px; margin-top:2px; }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:"IBM Plex Mono"; font-size:.74rem; font-weight:600; letter-spacing:.02em;
+    padding:7px 11px; border-radius:7px; text-decoration:none;
+    background:var(--surface-2); color:var(--ink); border:1px solid var(--border);
+  }
+  .btn:hover{ border-color:var(--accent); }
+  .btn svg{ width:12px; height:12px; }
+
+  .btn.pending{
+    background:transparent; border-style:dashed; color:var(--text-muted); cursor:default;
+    position:relative;
+  }
+  .badge-needslink{
+    font-family:"IBM Plex Mono"; font-size:.62rem; font-weight:600; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--text-muted); border:1px dashed var(--border);
+    border-radius:999px; padding:3px 8px; align-self:flex-start;
+  }
+
+  /* ===================== Get licensed ===================== */
+  .license{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:32px; box-shadow:var(--shadow);
+    display:grid; grid-template-columns: 1fr 1fr; gap:32px;
+  }
+  @media (max-width:760px){ .license{ grid-template-columns:1fr; padding:22px; } }
+  .license h3{ font-size:1.3rem; margin-bottom:8px; }
+  .license .steps{ display:flex; flex-direction:column; gap:16px; }
+  .step{ display:flex; gap:12px; }
+  .step .num{
+    font-family:"IBM Plex Mono"; font-weight:600; font-size:.78rem;
+    width:26px; height:26px; border-radius:50%; background:var(--surface-2); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .step .num{ color:var(--accent); } }
+  :root[data-theme="dark"] .step .num{ color:var(--accent); }
+  .step p{ margin:0 0 2px; font-size:.9rem; }
+  .step strong{ color:var(--ink); }
+
+  /* ===================== Footer ===================== */
+  footer{ border-top:1px solid var(--border); padding-block:28px 40px; margin-top:8px; }
+  .footer-inner{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:flex-start; }
+  footer p{ margin:0; font-size:.82rem; color:var(--text-muted); max-width:48ch; }
+  footer a{ color:var(--accent-ink); font-weight:600; text-decoration:none; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) footer a{ color:var(--accent); } }
+  :root[data-theme="dark"] footer a{ color:var(--accent); }
+  .foot-mono{ font-family:"IBM Plex Mono"; font-size:.74rem; color:var(--text-muted); }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="site-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="24" cy="24" r="21" stroke="currentColor" stroke-width="2.4"/>
+        <circle cx="24" cy="24" r="13" stroke="currentColor" stroke-width="2" opacity=".6"/>
+        <path d="M24 24 L24 8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M24 24 L35 17" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>
+      </svg>
+      <span class="brand-text"><b>Diamond Lakes Skywarn</b><span>GARLAND &amp; MONTGOMERY CO., AR</span></span>
+    </a>
+    <nav class="primary" aria-label="Primary">
+      <a href="#awareness">Sky &amp; Radar</a>
+      <a href="#sensors">Local Sensors</a>
+      <a href="#net">Net &amp; Voice</a>
+      <a href="#license">Get Licensed</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap" id="top">
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">Volunteer storm-spotter resource console</span>
+        <h1>Watching the sky over the Diamond Lakes.</h1>
+        <p class="lede">A single jump-off point for spotters, hams, and residents around Lake Ouachita, Lake Hamilton, Lake Catherine, and DeGray Lake — the terrain around Hot Springs and Mt Ida that makes this county warning area's radar coverage tricky and local eyes worth having. Everything below opens the live source directly; nothing here is cached or delayed.</p>
+        <div class="hero-links">
+          <a class="chip primary" href="https://radar.weather.gov/station/lzk/standard" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 12 L12 5"/></svg>
+            Live radar — KLZK
+          </a>
+          <a class="chip" href="https://www.broadcastify.com/listen/feed/65017" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14v-4a8 8 0 0 1 16 0v4"/><rect x="2" y="14" width="5" height="6" rx="1"/><rect x="17" y="14" width="5" height="6" rx="1"/></svg>
+            Listen — Feed 65017
+          </a>
+          <a class="chip" href="https://www.weather.gov/lzk/dssarkansas.htm" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19h16M4 15l4-5 4 3 4-7 4 4"/></svg>
+            LZK decision support
+          </a>
+        </div>
+      </div>
+      <div class="radar-scope" aria-hidden="true">
+        <svg viewBox="0 0 300 300">
+          <circle cx="150" cy="150" r="140" fill="none" stroke="var(--border)" stroke-width="1.5"/>
+          <circle cx="150" cy="150" r="95" fill="none" stroke="var(--border)" stroke-width="1.5"/>
+          <circle cx="150" cy="150" r="48" fill="none" stroke="var(--border)" stroke-width="1.5"/>
+          <line x1="10" y1="150" x2="290" y2="150" stroke="var(--border)" stroke-width="1"/>
+          <line x1="150" y1="10" x2="150" y2="290" stroke="var(--border)" stroke-width="1"/>
+          <g class="sweep">
+            <path d="M150 150 L150 10 A140 140 0 0 1 249 51 Z" fill="var(--accent)" opacity=".16"/>
+            <line x1="150" y1="150" x2="150" y2="10" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="awareness">
+    <div class="block-head">
+      <div>
+        <span class="eyebrow">Situational awareness</span>
+        <h2>Sky, radar &amp; forecast</h2>
+      </div>
+      <p>Statewide and regional sources maintained by NOAA/NWS — the same feeds NWS Little Rock forecasters use for briefings.</p>
+    </div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M12 12 4 4M6 12a6 6 0 0 1 6-6M3 12a9 9 0 0 1 9-9M12 18a6 6 0 0 0 6-6M12 21a9 9 0 0 0 9-9"/></svg></div>
+        <h3>Central &amp; West Arkansas radar</h3>
+        <p>KLZK Little Rock base reflectivity — the primary scan for Garland &amp; Montgomery counties.</p>
+        <div class="card-links">
+          <a class="btn" href="https://radar.weather.gov/station/lzk/standard" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16a4 4 0 0 1 .5-7.97A5.5 5.5 0 0 1 17 10a3.5 3.5 0 0 1-.5 7z"/></svg></div>
+        <h3>Short-term forecast</h3>
+        <p>NWS point forecast, split for the two ends of the coverage area.</p>
+        <div class="card-links">
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.5037&amp;lon=-93.0552" target="_blank" rel="noopener">Hot Springs ↗</a>
+          <a class="btn" href="https://forecast.weather.gov/MapClick.php?lat=34.5590&amp;lon=-93.6165" target="_blank" rel="noopener">Mt Ida ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <h3>Weather &amp; Hazards Data Viewer</h3>
+        <p>NWS's zoomable map of live watches, warnings, and advisories in force.</p>
+        <div class="card-links">
+          <a class="btn" href="https://www.wrh.noaa.gov/map/" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg></div>
+        <h3>NWS Little Rock decision support</h3>
+        <p>Briefing packages, outlooks, and the forecaster discussion straight from the LZK office.</p>
+        <div class="card-links">
+          <a class="btn" href="https://www.weather.gov/lzk/dssarkansas.htm" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21c-4-3.5-7-7-7-10.5A7 7 0 0 1 19 10.5C19 14 16 17.5 12 21Z"/><circle cx="12" cy="10" r="2.4"/></svg></div>
+        <h3>mPING ground reports</h3>
+        <p>Submit or view crowd-sourced precip-type and hail reports — the same reports NWS ingests.</p>
+        <div class="card-links">
+          <a class="btn" href="https://mping.nssl.noaa.gov/" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 15c2-4 4-6 6-6s3 2 4 4 3 4 5 4M3 19c2-3 4-4 6-4s3 1.5 4 3 3 3 5 3"/></svg></div>
+        <h3>Tempest weather map</h3>
+        <p>Crowd-sourced personal weather stations across the region, updated by the minute.</p>
+        <div class="card-links">
+          <a class="btn" href="https://tempestwx.com/map/" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="block" id="sensors">
+    <div class="block-head">
+      <div>
+        <span class="eyebrow">Diamond Lakes sensor network</span>
+        <h2>Local high-ground cameras &amp; stations</h2>
+      </div>
+      <p>Fixed cameras and weather stations at elevation, run by the local AUXCOMM team — the closest thing this area has to ground truth between radar scans.</p>
+    </div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20l7-14 4 7 3-4 6 11H2Z"/></svg></div>
+        <h3>High Peak</h3>
+        <p>Lookout camera and Ambient Weather station on the High Peak site.</p>
+        <span class="badge-needslink">Camera link pending</span>
+        <div class="card-links">
+          <!-- NEEDS-LINK: High Peak lookout camera URL -->
+          <a class="btn pending" href="#" aria-disabled="true" onclick="return false;">Camera</a>
+          <a class="btn" href="https://ambientweather.net/dashboard/685ae460fd7a5c962b03d3ce4642b000" target="_blank" rel="noopener">WX station ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20l7-14 4 7 3-4 6 11H2Z"/></svg></div>
+        <h3>West Mountain</h3>
+        <p>Lookout camera and Ambient Weather station on the West Mountain site.</p>
+        <span class="badge-needslink">Camera link pending</span>
+        <div class="card-links">
+          <!-- NEEDS-LINK: West Mountain lookout camera URL -->
+          <a class="btn pending" href="#" aria-disabled="true" onclick="return false;">Camera</a>
+          <a class="btn" href="https://ambientweather.net/dashboard/4e0cd50214d802ee82e5bb399c846ea4" target="_blank" rel="noopener">WX station ↗</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="block" id="net">
+    <div class="block-head">
+      <div>
+        <span class="eyebrow">Net &amp; voice</span>
+        <h2>Listen in and catch up</h2>
+      </div>
+      <p>The Skywarn net and after-action recap, for anyone off-radio during an activation.</p>
+    </div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14v-4a8 8 0 0 1 16 0v4"/><rect x="2" y="14" width="5" height="6" rx="1"/><rect x="17" y="14" width="5" height="6" rx="1"/></svg></div>
+        <h3>Broadcastify — Feed 65017</h3>
+        <p>Live audio of the local repeater net when a Skywarn activation is called.</p>
+        <div class="card-links">
+          <a class="btn" href="https://www.broadcastify.com/listen/feed/65017" target="_blank" rel="noopener">Listen live ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3V9Z" fill="currentColor" stroke="none"/></svg></div>
+        <h3>Arkansas AUXCOMM YouTube</h3>
+        <p>Training recaps, exercise after-action video, and spotter talks from across the state program.</p>
+        <div class="card-links">
+          <a class="btn" href="https://www.youtube.com/@ArkansasAUXCOMM-o3u" target="_blank" rel="noopener">Channel ↗</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="block" id="license">
+    <div class="block-head">
+      <div>
+        <span class="eyebrow">Join the net</span>
+        <h2>Get your ham radio license</h2>
+      </div>
+      <p>You don't need a license to watch this page — you need one to check in on the air and report what you see.</p>
+    </div>
+
+    <div class="license">
+      <div>
+        <h3>Why bother</h3>
+        <p style="font-size:.92rem; margin-bottom:14px;">A Technician-class license is the entry ticket to Skywarn net participation on 2 meters and 70 centimeters — no Morse code has been required since 2007, and the exam is 35 multiple-choice questions pulled from a public question pool. Most first-time candidates pass after a weekend of focused study.</p>
+        <p style="font-size:.92rem;">General and Extra class open up HF privileges used elsewhere in Arkansas AUXCOMM operations — useful once you're active locally, but not a prerequisite for your first net check-in.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <div><p><strong>Study the question pool.</strong> KB6NU's free No-Nonsense guide covers the current Technician pool in plain language.</p>
+            <a class="btn" href="https://www.kb6nu.com/study-guides/" target="_blank" rel="noopener">KB6NU study guide ↗</a></div>
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <div><p><strong>Drill with free practice exams.</strong> HamStudy tracks which questions you keep missing until you're consistently passing.</p>
+            <a class="btn" href="https://hamstudy.org/" target="_blank" rel="noopener">HamStudy practice exam ↗</a></div>
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <div><p><strong>Sit the exam.</strong> Volunteer Examiner sessions run in-person and online across Arkansas most weeks.</p>
+            <a class="btn" href="https://www.arrl.org/find-an-amateur-radio-license-exam-session" target="_blank" rel="noopener">Find a VE session ↗</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap footer-inner">
+    <p>Diamond Lakes Area Skywarn is a volunteer amateur-radio storm-spotting resource for the Hot Springs / Mt Ida region, part of the statewide <a href="https://skywarn.arkansasauxcomm.org/" target="_blank" rel="noopener">Arkansas AUXCOMM Skywarn</a> network. Not an official NWS product; always follow official NWS warnings first.</p>
+    <span class="foot-mono">NWS County Warning Area: LZK · Garland &amp; Montgomery Co., AR</span>
+  </div>
+</footer>
+
+</body>
+</html>
