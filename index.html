@@ -155,8 +155,6 @@
 
   .storm-mark{ width:100%; aspect-ratio:5/4; max-width:360px; margin-inline:auto; position:relative; border-radius:16px; overflow:hidden; box-shadow:var(--shadow); }
   .storm-mark svg{ width:100%; height:100%; display:block; }
-  .storm-mark .flash{ animation: flash 7s ease-out 3; }
-  @keyframes flash{ 0%,90%,100%{ opacity:0; } 91.5%{ opacity:.85; } 93%{ opacity:0; } 94%{ opacity:.4; } 95.5%{ opacity:0; } }
 
   /* ===================== Sections ===================== */
   section.block{ padding-block:36px; border-top:1px solid var(--border); }
@@ -218,6 +216,22 @@
   :root[data-theme="dark"] .step .num{ color:var(--accent); }
   .step p{ margin:0 0 2px; font-size:.9rem; }
   .step strong{ color:var(--ink); }
+
+  /* ===================== Safety callout ===================== */
+  .callout-warning{
+    background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--sev-warning);
+    border-radius:12px; padding:26px 28px; box-shadow:var(--shadow);
+    display:flex; gap:16px; align-items:flex-start;
+  }
+  .callout-warning .icon{ color:var(--sev-warning); flex:none; width:26px; height:26px; margin-top:3px; }
+  .callout-warning h2{ color:var(--sev-warning); font-size:1.7rem; font-weight:700; margin-bottom:12px; }
+  .callout-warning p{ font-size:.92rem; margin:0 0 10px; max-width:68ch; }
+  .callout-warning p:last-child{ margin-bottom:0; }
+  .callout-warning strong{ color:var(--ink); }
+  .callout-warning a{ color:var(--accent-ink); font-weight:600; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .callout-warning a{ color:var(--accent); } }
+  :root[data-theme="dark"] .callout-warning a{ color:var(--accent); }
+  @media (max-width:520px){ .callout-warning{ flex-direction:column; padding:20px; } }
 
   /* ===================== Footer ===================== */
   footer{ border-top:1px solid var(--border); padding-block:28px 40px; margin-top:8px; }
@@ -339,7 +353,6 @@
           <line x1="358" y1="232" x2="358" y2="270" stroke="#4a5560" stroke-width="2"/>
           <circle cx="358" cy="229" r="3.5" fill="var(--sev-warning)"/>
 
-          <rect class="flash" width="400" height="320" fill="#eaf1f5"/>
         </svg>
       </div>
     </div>
@@ -544,6 +557,19 @@
           <div><p><strong>Plug into a local club.</strong> The Spa Amateur Radio Association is the Hot Springs-area club to join once you're licensed.</p>
             <a class="btn" href="http://www.wb5spa.org" target="_blank" rel="noopener">SPA Amateur Radio Assn. ↗</a></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="safety">
+    <div class="callout-warning">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 1 21h22L12 3Z"/><path d="M12 9v5"/><circle cx="12" cy="17.5" r=".9" fill="currentColor" stroke="none"/></svg>
+      <div>
+        <h2>WARNING!</h2>
+        <p>Severe storm spotting is an inherently dangerous activity. Although the risks can be reduced, they cannot be completely eliminated. <strong>The storm spotter must take full responsibility for the consequences of their actions.</strong></p>
+        <p>At all times, safety is the top priority of every storm spotter. You can do no one any good if you are reckless, careless, or inconsiderate. The public's reception or rejection of us, as storm spotters, may depend on only one encounter — and that might just be you.</p>
+        <p>It is recommended that storm <a href="http://www.stormtrack.org/" target="_blank" rel="noopener">chasing</a> be done by experienced, advanced storm spotters who have had appropriate advanced training. The basic storm spotter is just as important — and may be more important — in a stationary position, because they can relay reports of the storm's progression as it passes their area.</p>
+        <p><strong>Remember: everyone is just as important as everyone else.</strong> There are no individuals or heroes. We are a team, and we are only as strong as our weakest link.</p>
       </div>
     </div>
   </section>
