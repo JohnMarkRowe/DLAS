@@ -1,0 +1,31 @@
+name = "dlas-severe-alerts"
+main = "src/index.js"
+compatibility_date = "2026-09-25"
+
+# SPC issues Day 1 outlooks around 0600/1300/1630/2000 UTC, Day 2 around
+# 0600/1730 UTC, and Day 3 around 0930 UTC. Checking every 30 minutes
+# catches each new issuance promptly without hammering SPC's server.
+[triggers]
+crons = ["*/30 * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dlas-alerts"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"   # from `wrangler d1 create dlas-alerts`
+
+[vars]
+# The GitHub Pages origin allowed to call /subscribe. Change if you ever
+# move off johnmarkrowe.github.io.
+ALLOWED_ORIGIN = "https://johnmarkrowe.github.io"
+
+# This Worker's own public URL, used to build unsubscribe links in emails.
+# Update after your first `wrangler deploy` prints the real workers.dev URL.
+SELF_URL = "https://dlas-severe-alerts.REPLACE.workers.dev"
+
+# The Resend sender identity. "Diamond Lakes Skywarn <onboarding@resend.dev>"
+# works immediately with no domain setup; switch to a verified domain
+# address later for better deliverability (see README.md).
+FROM_EMAIL = "Diamond Lakes Skywarn <onboarding@resend.dev>"
+
+# Secret (RESEND_API_KEY) is NOT set here.
+# Set it with `wrangler secret put RESEND_API_KEY` — see README.md.

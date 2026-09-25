@@ -221,6 +221,31 @@
   .step p{ margin:0 0 2px; font-size:.9rem; }
   .step strong{ color:var(--ink); }
 
+  /* ===================== Alert signup ===================== */
+  .alert-signup{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:22px 24px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:14px;
+  }
+  .alert-signup-row{ display:flex; flex-direction:column; gap:6px; }
+  .alert-signup-label{ font-family:"IBM Plex Mono"; font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+  .alert-signup-controls{ display:flex; gap:10px; flex-wrap:wrap; }
+  .alert-signup-controls input{
+    flex:1 1 220px; min-width:0; font:inherit; font-size:1rem; padding:11px 14px;
+    border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--ink);
+  }
+  .alert-signup-controls input:focus-visible{ outline:2px solid var(--focus); outline-offset:1px; }
+  .btn.alert-submit{
+    background:var(--accent); color:var(--accent-contrast); border-color:transparent;
+    font-size:.86rem; padding:11px 20px; flex:0 0 auto;
+  }
+  .btn.alert-submit:hover{ filter:brightness(1.06); }
+  .btn.alert-submit:disabled{ opacity:.6; cursor:default; }
+  .alert-consent{ display:flex; gap:10px; align-items:flex-start; font-size:.78rem; color:var(--text-muted); cursor:pointer; }
+  .alert-consent input{ margin-top:3px; flex:none; }
+  .alert-status{ margin:0; font-size:.85rem; min-height:1.2em; }
+  .alert-status.success{ color:var(--sev-advisory); }
+  .alert-status.error{ color:var(--sev-warning); }
+
   /* ===================== Safety callout ===================== */
   .callout-warning{
     background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--sev-warning);
@@ -261,6 +286,7 @@
       <span class="brand-text"><b>Diamond Lakes Skywarn</b><span>GARLAND, MONTGOMERY, PIKE &amp; HOT SPRING CO., AR</span></span>
     </a>
     <nav class="primary" aria-label="Primary">
+      <a href="#alerts">Email Alerts</a>
       <a href="#awareness">Sky &amp; Radar</a>
       <a href="#sensors">Local Sensors</a>
       <a href="#net">Net &amp; Voice</a>
@@ -296,6 +322,33 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="block" id="alerts">
+    <div class="block-head">
+      <div>
+        <span class="eyebrow">Free email alerts</span>
+        <h2>Get an email when the risk goes up</h2>
+      </div>
+      <p>One email whenever the Storm Prediction Center posts a Marginal risk or higher on the Day 1–3 convective outlook for Garland, Montgomery, Hot Spring, Pike, or Polk County. No daily digest, just the moments that matter.</p>
+    </div>
+
+    <form id="alert-form" class="alert-signup" novalidate>
+      <div class="alert-signup-row">
+        <label for="alert-email" class="alert-signup-label">Email address</label>
+        <div class="alert-signup-controls">
+          <input type="email" id="alert-email" name="email" placeholder="you@example.com" autocomplete="email" inputmode="email" required>
+          <button type="submit" class="btn alert-submit">Email me alerts</button>
+        </div>
+      </div>
+      <label class="alert-consent">
+        <input type="checkbox" id="alert-consent" name="consent" required>
+        <span>I agree to receive automated severe-weather email alerts from Diamond Lakes Skywarn. Frequency varies with weather. Every email includes a one-click unsubscribe link.</span>
+      </label>
+      <p id="alert-status" class="alert-status" role="status" aria-live="polite"></p>
+    </form>
+
+    <p class="card-note">This is a volunteer service, not an official NWS product — always follow official NWS warnings first. Covers Garland, Montgomery, Hot Spring, Pike &amp; Polk counties only.</p>
   </section>
 
   <section class="block" id="awareness">
@@ -560,5 +613,51 @@
   </div>
 </footer>
 
+<script>
+  // Set after deploying service/ (see service/README.md) — e.g.
+  // "https://dlas-severe-alerts.<your-subdomain>.workers.dev"
+  const DLAS_ALERT_API = "REPLACE_AFTER_DEPLOY";
+
+  document.getElementById('alert-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const statusEl = document.getElementById('alert-status');
+    const button = e.target.querySelector('.alert-submit');
+    const email = document.getElementById('alert-email').value;
+    const consent = document.getElementById('alert-consent').checked;
+
+    if (DLAS_ALERT_API === "REPLACE_AFTER_DEPLOY") {
+      statusEl.textContent = "Email alerts aren't live yet — check back soon.";
+      statusEl.className = "alert-status error";
+      return;
+    }
+
+    button.disabled = true;
+    statusEl.textContent = "Sending…";
+    statusEl.className = "alert-status";
+
+    try {
+      const res = await fetch(DLAS_ALERT_API + "/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, consent }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        statusEl.textContent = "You're signed up — check your inbox for a confirmation email.";
+        statusEl.className = "alert-status success";
+        e.target.reset();
+      } else {
+        statusEl.textContent = data.error || "Something went wrong. Please try again.";
+        statusEl.className = "alert-status error";
+      }
+    } catch (err) {
+      statusEl.textContent = "Couldn't reach the alert service. Try again in a moment.";
+      statusEl.className = "alert-status error";
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>
