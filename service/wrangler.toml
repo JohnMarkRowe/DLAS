@@ -11,7 +11,7 @@ crons = ["*/30 * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "dlas-alerts"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"   # from `wrangler d1 create dlas-alerts`
+database_id = "c2cb2f05-ccb4-45b5-a20c-5133354437f3"
 
 [vars]
 # The GitHub Pages origin allowed to call /subscribe. Change if you ever
@@ -20,7 +20,7 @@ ALLOWED_ORIGIN = "https://johnmarkrowe.github.io"
 
 # This Worker's own public URL, used to build unsubscribe links in emails.
 # Update after your first `wrangler deploy` prints the real workers.dev URL.
-SELF_URL = "https://dlas-severe-alerts.REPLACE.workers.dev"
+SELF_URL = "https://dlas-severe-alerts.n5xfw.workers.dev"
 
 # The Resend sender identity. "Diamond Lakes Skywarn <onboarding@resend.dev>"
 # works immediately with no domain setup; switch to a verified domain
